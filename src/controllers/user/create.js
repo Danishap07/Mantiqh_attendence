@@ -18,7 +18,7 @@ export default
     // check if user already exist
     const emailExist = await prisma.users.findFirst({ where: { email: req.body.email } })
     if(emailExist){
-      res.status(409).send("email already exist")
+     return res.status(409).json({ message: "email already exist" })
     }
 
     const data = {
@@ -29,20 +29,20 @@ export default
       mobile_no: req.body.mobile_no,
       jobRole: req.body.jobRole
     }
-    const hash = data.password = bcrypt.hash(data.password, 10);
-
+    const hash = data.password = await bcrypt.hash(data.password, 10);
+  
       const results = await prisma.users.create({
         data
       });
 
       const token = jwt.sign({
-        user: user.email 
+        user: data.email 
        }, 
        process.env.JWT_SECRET,
        { expiresIn: '24h' });
        res.status(200).send({ "token": token });
      
-      return res.status(200).json({ token, msg: 'user added successfully!'});
+      return res.status(200).json({  msg: 'User added successfully!'});
   } catch (error) {
       return res.status(500).json({ message: error.message });
   }

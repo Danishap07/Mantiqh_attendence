@@ -46,10 +46,10 @@ Router.route('/signup').post(
 
 //   next();
 // }, 
-validate, register)
+ validate, register)
 
 Router.route('/login').post(login)
 
-Router.route('/data').get(readData)
+Router.route('/data').get(auth, readData)
 
 export default Router
