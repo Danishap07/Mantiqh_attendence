@@ -15,38 +15,7 @@ const Router = _Router();
 
 Router.route('/admin_signup').post(validate, createAdmin)
 
-Router.route('/signup').post(
-//         [
-//         check("firstname")
-//       .isLength({ min: 3 })
-//       .withMessage("the name must have minimum length of 3")
-//       .trim(),
-
-//     check("lastname")
-//       .isLength({ min: 3 })
-//       .withMessage("the name must have minimum length of 3")
-//       .trim(),  
-
-//     check("email")
-//       .isEmail()
-//       .withMessage("invalid email address")
-//       .normalizeEmail(),
-
-//     check("password")
-//       .isLength({ min: 6, max: 16 })
-//       .withMessage("your password should have min and max length between 8-15"),
-
-//       check("mobile_no")
-//       .isLength({ min: 10 })
-//   ],
-//    (req, res, next) => {
-//   const error = validationResult(req).formatWith(({ msg }) => msg);
-
-//   if (!error.isEmpty()) return res.status(422).json({ error: error.array() });
-
-//   next();
-// }, 
- validate, register)
+Router.route('/signup').post(validate, register)
 
 Router.route('/login').post(login)
 
