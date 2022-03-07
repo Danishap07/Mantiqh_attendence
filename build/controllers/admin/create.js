@@ -11,8 +11,6 @@ var _bcryptjs = _interopRequireDefault(require("bcryptjs"));
 
 require("dotenv");
 
-var _jsonwebtoken = _interopRequireDefault(require("jsonwebtoken"));
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -42,7 +40,7 @@ function _handler() {
 
 
             _context.next = 4;
-            return _prisma["default"].users.findFirst({
+            return _prisma["default"].admin.findFirst({
               where: {
                 email: req.body.email
               }
@@ -51,16 +49,10 @@ function _handler() {
           case 4:
             emailExist = _context.sent;
 
-            if (!emailExist) {
-              _context.next = 7;
-              break;
+            if (emailExist) {
+              res.status(409).send("email already exist");
             }
 
-            return _context.abrupt("return", res.status(409).json({
-              message: "email already exist"
-            }));
-
-          case 7:
             data = {
               firstname: req.body.firstname,
               lastname: req.body.lastname,
@@ -69,20 +61,16 @@ function _handler() {
               mobile_no: req.body.mobile_no,
               jobRole: req.body.jobRole
             };
+            hash = data.password = _bcryptjs["default"].hash(data.password, 10);
             _context.next = 10;
-            return _bcryptjs["default"].hash(data.password, 10);
-
-          case 10:
-            hash = data.password = _context.sent;
-            _context.next = 13;
-            return _prisma["default"].users.create({
+            return _prisma["default"].admin.create({
               data: data
             });
 
-          case 13:
+          case 10:
             results = _context.sent;
-            token = _jsonwebtoken["default"].sign({
-              user: data.email
+            token = jwt.sign({
+              user: admin.email
             }, process.env.JWT_SECRET, {
               expiresIn: '24h'
             });
@@ -90,22 +78,23 @@ function _handler() {
               "token": token
             });
             return _context.abrupt("return", res.status(200).json({
-              msg: 'User added successfully!'
+              token: token,
+              msg: 'admin created successfully!'
             }));
 
-          case 19:
-            _context.prev = 19;
+          case 16:
+            _context.prev = 16;
             _context.t0 = _context["catch"](0);
             return _context.abrupt("return", res.status(500).json({
               message: _context.t0.message
             }));
 
-          case 22:
+          case 19:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[0, 19]]);
+    }, _callee, null, [[0, 16]]);
   }));
   return _handler.apply(this, arguments);
 }

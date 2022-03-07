@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs'
 import {} from "dotenv"
 
 export default
-async (req, res) => {
+async function(req, res) {
     const user = await prisma.users.findUnique({
       where: {email: req.body.email}
     })

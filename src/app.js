@@ -1,11 +1,12 @@
-import express, {json} from 'express'
+import express from 'express'
 const app = express()
 import bodyparser from 'body-parser'
+// import expressValidator from 'express-validator'
 import router from './routes'
 
 app.use(bodyparser.json())
 app.use(bodyparser.urlencoded({extended: true}))
-app.use(json())
+// app.use(expressValidator())
 
 app.use('/api', router)
 

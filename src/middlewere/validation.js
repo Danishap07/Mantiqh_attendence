@@ -1,6 +1,6 @@
-import { check,validationResult } from 'express-validator'
+ import { check, validationResult } from 'express-validator'
 
-module.exports =  [
+export const validationSignUp = [
     check("firstname")
       .isLength({ min: 3 })
       .withMessage("the name must have minimum length of 3")
@@ -12,6 +12,7 @@ module.exports =  [
       .trim(),  
 
     check("email")
+      .normalizeEmail()
       .isEmail()
       .withMessage("invalid email address")
       .normalizeEmail(),
@@ -22,12 +23,13 @@ module.exports =  [
       .matches(/\d/)
       .withMessage("your password should have at least one number")
       .matches(/[!@#$%^&*(),.?":{}|<>]/)
-      .withMessage("your password should have at least one sepcial character"),
-  ],
-   (req, res, next) => {
-  const error = validationResult(req).formatWith(({ msg }) => msg);
+      .withMessage("your password should have at least one special character"),
+  ]
 
-  if (!error.isEmpty()) return res.status(422).json({ error: error.array() });
+export const validation = (req, res, next) => {
+  const result = validationResult(req);
+
+  if (!result.isEmpty()) return res.json({ error: result.array() });
 
   next();
 }
@@ -72,3 +74,17 @@ module.exports =  [
 
   //   body("job_role", "Please specify a jobrole")
   //  ]
+// import { body } from 'express-validator/check'
+
+// export function validate(method) {
+//   switch (method) {
+//     case 'createUser': {
+//       return [
+//         body('userName', 'userName doesnt exists').exists(),
+//         body('email', 'Invalid email').exists().isEmail(),
+//           body('phone').optional().isInt(),
+//           body('status').optional().isIn(['enabled', 'disabled'])
+//        ]
+//     }
+//   }
+// }

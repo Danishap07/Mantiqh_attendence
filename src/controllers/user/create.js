@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs'
 import {} from "dotenv"
 import jwt from 'jsonwebtoken'
 
+
 function newFunction() {
   return 'dotenv'
 }
@@ -12,6 +13,7 @@ export default
 
   async function handler(req, res) {
   try {
+    
     if(!req.body){
       res.status(400).send("some fields are empty")
     }
