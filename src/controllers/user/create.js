@@ -4,7 +4,6 @@ import bcrypt from 'bcryptjs'
 import {} from "dotenv"
 import jwt from 'jsonwebtoken'
 
-
 function newFunction() {
   return 'dotenv'
 }
@@ -37,16 +36,25 @@ export default
         data
       });
 
+      if(results) {
+        res.json("User registered successfully")
+      }
+      // else{
+      //   error: results.array()
+      // }
+
       const token = jwt.sign({
         user: data.email 
        }, 
        process.env.JWT_SECRET,
        { expiresIn: '24h' });
-       res.status(200).send({ "token": token });
+       res.status(200).send({ 
+         token: token 
+        });
      
       return res.status(200).json({  msg: 'User added successfully!'});
-  } catch (error) {
+  } 
+  catch (error) {
       return res.status(500).json({ message: error.message });
   }
-   
 }

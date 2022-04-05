@@ -27,9 +27,9 @@ export const validationSignUp = [
   ]
 
 export const validation = (req, res, next) => {
-  const result = validationResult(req);
+  const error = validationResult(req);
 
-  if (!result.isEmpty()) return res.json({ error: result.array() });
+  if (!error.isEmpty()) return res.json(error.array());
 
   next();
 }
