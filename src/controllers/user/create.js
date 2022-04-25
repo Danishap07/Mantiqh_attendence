@@ -36,9 +36,9 @@ export default
         data
       });
 
-      if(results) {
-        res.json("User registered successfully")
-      }
+      // if(results) {
+      //   res.json("User registered successfully")
+      // }
       // else{
       //   error: results.array()
       // }
@@ -49,10 +49,11 @@ export default
        process.env.JWT_SECRET,
        { expiresIn: '24h' });
        res.status(200).send({ 
-         token: token 
+         token: token ,
+         msg: "user added successfully"
         });
      
-      return res.status(200).json({  msg: 'User added successfully!'});
+      // return res.status(200).json({  msg: 'User added successfully!'});
   } 
   catch (error) {
       return res.status(500).json({ message: error.message });

@@ -5,6 +5,7 @@ import login from '../controllers/user/login';
 import auth from '../middlewere/jwtAuth'
 import createAdmin from '../controllers/admin/create'
 import { validationSignUp, validation } from '../middlewere/validation';
+// import userById from '../controllers/user/read'
 
 const Router = _Router();
 
@@ -16,9 +17,8 @@ Router.route('/admin_signup').post(createAdmin)
 
 Router.route('/signup').post(validationSignUp, validation, register)
 
-
 Router.route('/login').post(login)
 
-Router.route('/data').get(auth, readData)
+Router.route('/').get(auth, readData);
 
 export default Router

@@ -11,14 +11,14 @@ datasource db {
 }
 
 model admin {
-  user_id     Int    @id @default(autoincrement()) 
+  user_id     Int     @id @default(autoincrement())
   firstname   String? @db.VarChar(20)
   lastname    String? @db.VarChar(20)
-  email       String @db.VarChar(50)
+  email       String  @db.VarChar(50)
   mobile_no   Int
-  password    String @db.VarChar(20)
-  job_role    String @db.VarChar(50)
-  profile_pic Bytes  @db.Blob 
+  password    String  @db.VarChar(20)
+  job_role    String  @db.VarChar(50)
+  profile_pic Bytes   @db.Blob
 }
 
 model master_admin {
@@ -26,18 +26,32 @@ model master_admin {
 }
 
 model users {
-  id     Int       @id @default(autoincrement())
-  firstname   String?   @db.VarChar(50)
-  lastname    String?   @db.VarChar(50)     
-  email       String    @db.VarChar(50)     @unique
-  password    String    @db.VarChar(20)
-  mobile_no   String    @db.VarChar(15)     @unique
-  jobRole     String    @db.VarChar(50)
-  // social      json?
- // Relation fields
-  //  courses     CourseEnrollment[]
-  //  testResults TestResult[]       @relation(name: "results")
-  //  testsGraded TestResult[]       @relation(name: "graded")
-   
+  employee_id Int          @id @default(autoincrement())
+  lastname    String?      @db.VarChar(50)
+  email       String       @unique @db.VarChar(50)
+  firstname   String?      @db.VarChar(50)
+  password    String       @db.VarChar(20)
+  mobile_no   String       @unique @db.VarChar(15)
+  jobRole     String       @db.VarChar(50)
+  attendences Attendence[]
 }
 
+model Attendence {
+  attendence_id    Int          @id @default(autoincrement())
+  attendence       String       @db.VarChar(50)
+  date             DateTime     @default(now())
+  userLoginTime    loggedTime[]
+  users            users?       @relation(fields: [usersEmployee_id], references: [employee_id])
+  usersEmployee_id Int?
+}
+
+model loggedTime {
+  id                      Int         @id @default(autoincrement())
+  employee_id             Int
+  SessionID               Int
+  login_time              DateTime
+  logout_time             DateTime
+  work_duration           Float
+  Attendence              Attendence? @relation(fields: [attendenceAttendence_id], references: [attendence_id])
+  attendenceAttendence_id Int?
+}
